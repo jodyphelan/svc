@@ -1,8 +1,8 @@
+#! /usr/bin/python
 from __future__ import division
 import sys
 import json
 from collections import defaultdict,Counter
-from tqdm import tqdm
 
 def fa2dict(filename):
         print "Loading sequences"
@@ -21,6 +21,9 @@ def fa2dict(filename):
         return result
 
 
+if len(sys.argv)!=5:
+	print "json_var2matrix.py <samples> <json_dir> <ref> <outfile>"
+	quit()
 
 sample_file = sys.argv[1]
 json_dir = sys.argv[2]
@@ -35,7 +38,7 @@ fa_dict = fa2dict(ref_file)
 samples = [x.rstrip() for x in open(sample_file).readlines()]
 all_vars = defaultdict(lambda:defaultdict(dict))
 loci = set()
-for s in tqdm(samples):
+for s in (samples):
 	var_file = "%s/%s.var.json" % (json_dir,s)
 	var = json.load(open(var_file))
 	for chrom in var:
