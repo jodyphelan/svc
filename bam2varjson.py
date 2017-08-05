@@ -6,11 +6,12 @@ import json
 import os.path
 import gzip 
 
-vcfutils = "vcfutils.pl"
-samtools = "~/software/samtools-1.3.1/samtools"
-bcftools = "~/software/bcftools-1.3.1/bcftools"
-sort_alt = "sort-alt"
-vcf_concat = "vcf-concat"
+scriptDir = os.path.dirname(os.path.realpath(__file__))
+
+vcfutils = scriptDir+"/bin/vcfutils.pl"
+samtools = scriptdir+"/bin/samtools"
+bcftools = scriptdir+"/bin/bcftools"
+sort_alt = scriptdir+"/bin/sort-alt"
 
 def check_files(programs):
 	for p in programs:
@@ -52,7 +53,7 @@ def call_variants(ref,bam,prefix,threads):
 	if not os.path.isfile(bai): subprocess.call("%s index %s" % (samtools,bam),shell=True)
 
 	subprocess.call("%s splitchr -l 200000 %s | xargs -P%s -i sh -c \"%s mpileup -ugf %s -r {} %s | %s call --ploidy 1 -vmO z -o %s.part.{}.vcf.gz\"" % (vcfutils,fai,threads,samtools,ref,bam,bcftools,prefix),shell=True)
-	subprocess.call("%s `ls %s.part*.vcf.gz | %s -N` | gzip -c > %s" % (vcf_concat,prefix,sort_alt,vcf_file),shell=True)
+	subprocess.call("bcftools concat `ls %s.part*.vcf.gz | %s -N` | gzip -c > %s" % (vcf_concat,prefix,sort_alt,vcf_file),shell=True)
 	subprocess.call("rm %s.part*.vcf.gz" % prefix,shell=True)
 
 	base_calls = defaultdict(lambda : defaultdict(dict))
