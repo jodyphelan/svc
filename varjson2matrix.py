@@ -29,7 +29,8 @@ sample_file = sys.argv[1]
 json_dir = sys.argv[2]
 ref_file = sys.argv[3]
 outfile = sys.argv[4]
-
+sample_log = outfile+".sample_log"
+var_log = outfile+".variant_log"
 
 samp_miss_cut = 0.1
 var_miss_cut = 0.1
@@ -68,7 +69,7 @@ for s in samples:
 		samp_miss_pass.append(s)
 	else:
 		samp_miss_fail.append(s)
-
+open(sample_log,"w").write("\n".join(["%s\t%s" % (s,samp_missing[s]) for s in samples]))
 print "%s/%s samples pass missingness cutoff" % (len(samp_miss_pass),len(samples))
 
 for s in samp_miss_fail:
