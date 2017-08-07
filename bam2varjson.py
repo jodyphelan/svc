@@ -9,9 +9,9 @@ import gzip
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 
 vcfutils = scriptDir+"/bin/vcfutils.pl"
-samtools = scriptdir+"/bin/samtools"
-bcftools = scriptdir+"/bin/bcftools"
-sort_alt = scriptdir+"/bin/sort-alt"
+samtools = scriptDir+"/bin/samtools"
+bcftools = scriptDir+"/bin/bcftools"
+sort_alt = scriptDir+"/bin/sort-alt"
 
 def check_files(programs):
 	for p in programs:
